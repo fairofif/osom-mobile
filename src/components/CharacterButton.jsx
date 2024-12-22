@@ -10,17 +10,17 @@ const CharacterButton = ({
 
     useEffect(() => {
         if (character === "tyo") {
-            setDirAva(require("../../assets/chara/chara_tyo.png"));
+            setDirAva(require("../assets/image/chara/chara_tyo.png"));
         } else if (character === "opip") {
-            setDirAva(require("../../assets/chara/chara_opip.png"));
+            setDirAva(require("../assets/image/chara/chara_opip.png"));
         } else if (character === "aldra") {
-            setDirAva(require("../../assets/chara/chara_aldra.png"));
+            setDirAva(require("../assets/image/chara/chara_aldra.png"));
         } else if (character === "suki") {
-            setDirAva(require("../../assets/chara/chara_suki.png"));
+            setDirAva(require("../assets/image/chara/chara_suki.png"));
         } else if (character === "hanip") {
-            setDirAva(require("../../assets/chara/chara_hanip.png"));
+            setDirAva(require("../assets/image/chara/chara_hanip.png"));
         } else if (character === "dhea") {
-            setDirAva(require("../../assets/chara/chara_dhea.png"));
+            setDirAva(require("../assets/image/chara/chara_dhea.png"));
         }
     }, [character]);
 

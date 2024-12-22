@@ -16,7 +16,7 @@ export const restRegister = async (userData) => {
 export const restLogin = async (userData) => {
     try {
         const response = await api.post('/auth/login', userData)
-        return response.data
+        return response.data.data
     } catch (e) {
         throw new Error('Failed login: ' + e.message)
     }
