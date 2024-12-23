@@ -44,6 +44,7 @@ export default function InGame({ navigation }) {
 
     const [fontsLoaded] = useFonts({
         CherryBombOne: require("../assets/font/CherryBombOne-Regular.ttf"),
+        MontserratBold: require("../assets/font/Montserrat-Bold.ttf")
     });
     if (!fontsLoaded) {
         return null;
@@ -210,9 +211,37 @@ export default function InGame({ navigation }) {
                         />
                     </View>
                 </View>
-                <View style={styles.scoreContainer}>
-                    <Text style={styles.score}>{score}</Text>
+
+                <View style={styles.indicatorContainer}>
+                    <View style={styles.winStreakContainer}>
+                        <Text style={styles.textIndicator}>
+                            Win Streak: {winStreak}
+                        </Text>
+                        <Text style={styles.textIndicator}>
+                            Score Multiplier: X{
+                                winStreak <= 2
+                                    ? "1"
+                                    : (winStreak >= 3 && winStreak <= 4)
+                                        ? "2"
+                                        : (winStreak >= 5 && winStreak <= 9)
+                                            ? "5"
+                                            : (winStreak >= 10) && "10"
+                            }
+                        </Text>
+                    </View>
+
+                    <View style={styles.scoreContainer}>
+                        <Text style={styles.score}>{score}</Text>
+                    </View>
+
+                    <View style={styles.levelContainer}>
+                        <Text style={styles.textIndicator}>
+                            Level: {level}
+                        </Text>
+                    </View>
+
                 </View>
+
                 <View style={styles.displayHandContainer}>
                     <HandDisplay move={ourHand} />
                     <HandDisplay move={opponentHand} />
@@ -242,7 +271,7 @@ export default function InGame({ navigation }) {
                 <Animated.View
                     style={[
                         styles.popupContainer,
-                        { opacity: popupOpacity }, // Bind opacity to animation
+                        { opacity: popupOpacity },
                     ]}
                 >
                     <InGamePopUp
@@ -278,6 +307,36 @@ const styles = StyleSheet.create({
         flex: 1,
         resizeMode: "cover",
     },
+    textIndicator: {
+        fontFamily: 'MontserratBold',
+        fontSize: 7
+    },
+    winStreakContainer: {
+        width: "30%",
+        height: 90,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    scoreContainer: {
+        width: '40%',
+        height: 90,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    levelContainer: {
+        width: "30%",
+        justifyContent: 'center',
+        height: 90,
+        alignItems: 'center'
+    },
+    indicatorContainer: {
+        width: '100%',
+        height: 90,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20
+    },
     popupButton: {
         alignSelf: 'center',
         alignItems: 'center',
@@ -309,15 +368,9 @@ const styles = StyleSheet.create({
         height: 55,
         width: "65%",
     },
-    scoreContainer: {
-        width: "100%",
-        height: 90,
-        alignItems: "center",
-        justifyContent: "center",
-    },
     score: {
         fontFamily: "CherryBombOne",
-        fontSize: 70,
+        fontSize: 30,
     },
     displayHandContainer: {
         width: "100%",
