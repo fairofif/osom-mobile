@@ -25,7 +25,7 @@ export const restTakeTurn = async (token, userData) => {
                 Authorization: `Bearer ${token}`
             }
         })
-        return response.data.data
+        return response.data
     } catch (e) {
         throw new Error('Failed to take turn: ' + e.message)
     }
