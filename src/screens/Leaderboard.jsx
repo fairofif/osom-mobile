@@ -1,28 +1,62 @@
+import React from "react";
 import {
-  Button,
   SafeAreaView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
+  TouchableOpacity,
+  FlatList,
   ImageBackground,
-  ScrollView,
 } from "react-native";
-import { useAuth } from "../context/AuthContext";
 import { useFonts } from "expo-font";
 import Icon from "react-native-vector-icons/Ionicons";
 
-export default function Dashboard({ navigation }) {
-  const { logout } = useAuth();
-
+export default function Leaderboard() {
   const [fontsLoaded] = useFonts({
     CherryBombOne: require("../assets/font/CherryBombOne-Regular.ttf"),
     MontserratReg: require("../assets/font/Montserrat-Regular.ttf"),
     LeagueSpartan: require("../assets/font/LeagueSpartan-Medium.ttf"),
+    Boogaloo: require("../assets/font/Boogaloo-Regular.ttf"),
   });
   if (!fontsLoaded) {
     return null;
   }
+
+  const leaderboardData = [
+    { id: "1", name: "User 1", score: 500 },
+    { id: "2", name: "User 2", score: 400 },
+    { id: "3", name: "User 3", score: 300 },
+    { id: "4", name: "User 4", score: 200 },
+    { id: "5", name: "User 5", score: 100 },
+  ];
+
+  const renderItem = ({ item, index }) => {
+    let trophyColor;
+
+    // Assign colors based on rank
+    if (index === 0) {
+      trophyColor = "#fcbe00"; // Gold
+    } else if (index === 1) {
+      trophyColor = "#8f8f8f"; // Silver
+    } else if (index === 2) {
+      trophyColor = "#db8735"; // Bronze
+    } else {
+      trophyColor = "#bdbdbd"; // Gray
+    }
+
+    return (
+      <View style={styles.card}>
+        <View style={styles.iconContainer}>
+          <Icon name="trophy-outline" size={40} color={trophyColor} />
+          <View style={styles.iconOverlay}>
+            <Text style={styles.iconText}>{index + 1}</Text>
+          </View>
+        </View>
+        <Text style={styles.rank}>{item.name}</Text>
+        <Text style={styles.score}>{item.score}</Text>
+      </View>
+    );
+  };
 
   return (
     <ImageBackground
@@ -30,64 +64,17 @@ export default function Dashboard({ navigation }) {
       style={styles.background}
     >
       <SafeAreaView style={styles.container}>
-        <View style>
-          <View style={styles.logoutButton}>
-            <TouchableOpacity
-              style={{
-                marginBottom: -6,
-              }}
-            >
-              <Icon name="log-out-outline" size={45} />
-            </TouchableOpacity>
-            <Text style={{ fontFamily: "LeagueSpartan" }}>Logout</Text>
-          </View>
-          <View>
-            <Text style={styles.textStart}>Hi, User!</Text>
-            <Text style={styles.textEnd}>
-              Welcome to game application OSOM!
-            </Text>
-          </View>
-          <ScrollView>
-            <View style={styles.textBoxParagraph}>
-              <Text style={styles.textStartParagraph}>Game Rules:</Text>
-              <Text style={styles.textParagraph}>
-                1. Players will get 5 playing tokens and are asked to choose one
-                of three options, which are shown by the hand sign on the screen
-                in the shapes of rock, paper, and scissors.
-              </Text>
-              <Text style={styles.textParagraph}>
-                2. Players are given 5 seconds to make a decision.
-              </Text>
-              <Text style={styles.textParagraph}>
-                3. After the player chooses, the screen will show the result of
-                both player and robots choices.
-              </Text>
-              <Text style={styles.textParagraph}>
-                4. If the player wins, the player will get +100 points.
-              </Text>
-              <Text style={styles.textParagraph}>
-                5. If the player win streak 3x, the points will be multiplied by
-                2.
-              </Text>
-              <Text style={styles.textParagraph}>
-                6. If the player win streak 5x, the points will be multiplied by
-                5 and +1 playing token.
-              </Text>
-              <Text style={styles.textParagraph}>
-                7. If the player win streak 10x and so on, the points will be
-                multiplied by 10.
-              </Text>
-              <Text style={styles.textParagraph}>
-                8. If the player loses, the player’s playing token will decrease
-                -1 point.
-              </Text>
-            </View>
-          </ScrollView>
-          <View style={styles.playButton}>
-            <TouchableOpacity>
-              <Text style={styles.playText}>Start Playing!</Text>
-            </TouchableOpacity>
-          </View>
+        <View style={styles.content}>
+          <Text style={styles.title}>Leaderboard!</Text>
+          <FlatList
+            data={leaderboardData}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.list}
+          />
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Finish!</Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     </ImageBackground>
@@ -97,55 +84,89 @@ export default function Dashboard({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 30,
+    alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 20,
+  },
+  content: {
+    width: "90%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   background: {
     flex: 1,
     resizeMode: "cover",
   },
-  textStart: {
+  title: {
     fontFamily: "CherryBombOne",
     fontSize: 40,
-    textShadowColor: "#828282", // Shadow color
-    textShadowOffset: { width: 2, height: 2 }, // Offset in x and y direction
-    textShadowRadius: 10, // Blur radius for the shadow
-  },
-  textEnd: {
-    fontFamily: "LeagueSpartan",
-    fontSize: 20,
     marginBottom: 20,
+    textAlign: "center",
+    textShadowColor: "#F8E51E", // Shadow color
+    textShadowOffset: { width: 4, height: 4 }, // Offset in x and y direction
+    textShadowRadius: 20,
   },
-  textBoxParagraph: {
+  list: {
+    width: "100%",
+  },
+  card: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     backgroundColor: "white",
-    justifyContent: "center",
-    padding: 8,
-    borderRadius: 15,
-    marginHorizontal: 10,
-    marginBottom: 20,
+    borderRadius: 20,
+    padding: 15,
+    marginVertical: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  textStartParagraph: {
-    textAlign: "center",
+  rank: {
+    fontFamily: "Boogaloo",
+    fontSize: 25,
+    marginLeft: 10,
+  },
+  score: {
     fontFamily: "CherryBombOne",
-    fontSize: 20,
+    fontSize: 25,
+    marginLeft: 120,
+    marginTop: -5,
   },
-  textParagraph: {
-    fontFamily: "LeagueSpartan",
-    fontSize: 16,
-  },
-  logoutButton: {
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-  },
-  playButton: {
+  button: {
+    marginTop: 20,
     backgroundColor: "#F8E51E",
-    padding: 12,
-    borderRadius: 15,
-    marginHorizontal: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 120,
+    borderRadius: 20,
+    elevation: 3,
   },
-  playText: {
-    textAlign: "center",
+  buttonText: {
     fontFamily: "Montserrat",
     fontWeight: 500,
+    textAlign: "center",
+  },
+  iconContainer: {
+    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  iconOverlay: {
+    position: "absolute",
+    top: 4,
+    right: 10,
+    backgroundColor: "white",
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
+  },
+  iconText: {
+    fontFamily: "Boogaloo",
+    fontSize: 18,
+    color: "black",
   },
 });

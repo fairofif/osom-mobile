@@ -9,6 +9,8 @@ import { useAuth } from "../context/AuthContext";
 import SplashScreen from "../screens/SplashScreen";
 import Character from "../screens/Character";
 import InGame from "../screens/InGame";
+import Profile from "../screens/Profile";
+import Leaderboard from "../screens/Leaderboard";
 // import { Icon } from "react-native-vector-icons/Icon";
 
 const Stack = createNativeStackNavigator();
@@ -57,12 +59,22 @@ export default function AppNavigator() {
           <Stack.Screen
             name="Character"
             component={Character}
-            options={{headerShown: false}}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Leaderboard"
+            component={Leaderboard}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="InGame"
             component={InGame}
-            options={{headerShown: false}}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={Profile}
+            options={{ headerShown: false }}
           />
         </>
       ) : (

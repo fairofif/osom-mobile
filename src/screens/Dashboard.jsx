@@ -1,5 +1,5 @@
+import React, { useEffect, useRef } from "react";
 import {
-  Button,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -8,35 +8,74 @@ import {
   ImageBackground,
   ScrollView,
   Alert,
+  Image,
+  Animated,
 } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useFonts } from "expo-font";
 import Icon from "react-native-vector-icons/Ionicons";
 
 export default function Dashboard({ navigation }) {
-  const { logout } = useAuth();
+  const waveAnim = useRef(new Animated.Value(0)).current;
+  // const { logout } = useAuth();
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      Alert.alert("Logged Out");
-    } catch (e) {
-      Alert.alert(e.message);
-    }
-  };
-
-  const handleStartGame = () => {
-    navigation.navigate('Character');
-  }
+  // const handleLogout = async () => {
+  //   try {
+  //     await logout();
+  //     Alert.alert("Logged Out");
+  //   } catch (e) {
+  //     Alert.alert(e.message);
+  //   }
+  // };
 
   const [fontsLoaded] = useFonts({
     CherryBombOne: require("../assets/font/CherryBombOne-Regular.ttf"),
     MontserratReg: require("../assets/font/Montserrat-Regular.ttf"),
     LeagueSpartan: require("../assets/font/LeagueSpartan-Medium.ttf"),
   });
+
+  useEffect(() => {
+    const waveAnimation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(waveAnim, {
+          toValue: 15, // Rotation angle (degrees)
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(waveAnim, {
+          toValue: -15,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(waveAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]),
+      { iterations: 2 } // Only animate twice
+    );
+
+    waveAnimation.start();
+
+    return () => waveAnim.stopAnimation(); // Cleanup
+  }, [waveAnim]); // Dependency is correct
+
   if (!fontsLoaded) {
-    return null;
+    return null; // Safe to exit if fonts are not loaded
   }
+
+  const handleStartGame = () => {
+    navigation.navigate("Character");
+  };
+
+  const handleProfile = () => {
+    navigation.navigate("Profile");
+  };
+
+  const handleLeaderboard = () => {
+    navigation.navigate("Leaderboard");
+  };
 
   return (
     <ImageBackground
@@ -44,26 +83,64 @@ export default function Dashboard({ navigation }) {
       style={styles.background}
     >
       <SafeAreaView style={styles.container}>
-        <View style>
-          <View style={styles.logoutButton}>
-            <TouchableOpacity
-              style={{
-                marginBottom: -6,
-              }}
-              onPress={handleLogout}
-            >
-              <Icon name="log-out-outline" size={45} />
-            </TouchableOpacity>
-            <Text style={{ fontFamily: "LeagueSpartan" }}>Logout</Text>
+        <View>
+          <View style={styles.profileButton}>
+            <View>
+              <TouchableOpacity
+                style={{
+                  marginLeft: 18,
+                  marginBottom: -2,
+                }}
+                onPress={handleLeaderboard}
+              >
+                <Icon name="trophy-outline" size={36} />
+              </TouchableOpacity>
+              <Text style={{ fontFamily: "LeagueSpartan" }}>Leaderboard</Text>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={{
+                  marginBottom: -2,
+                }}
+                onPress={handleProfile}
+              >
+                <Icon name="person-outline" size={36} />
+              </TouchableOpacity>
+              <Text style={{ fontFamily: "LeagueSpartan" }}>Profile</Text>
+            </View>
           </View>
           <View>
-            <Text style={styles.textStart}>Hi, User!</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.textStart}>Hi, User!</Text>
+              <Animated.Image
+                style={{
+                  marginLeft: 10,
+                  width: 58,
+                  height: 58,
+                  transform: [
+                    {
+                      rotate: waveAnim.interpolate({
+                        inputRange: [-15, 15],
+                        outputRange: ["-15deg", "15deg"],
+                      }),
+                    },
+                  ],
+                }}
+                source={require("../assets/hand-dashboard.png")}
+              />
+            </View>
             <Text style={styles.textEnd}>
               Welcome to game application OSOM!
             </Text>
           </View>
-          <ScrollView>
-            <View style={styles.textBoxParagraph}>
+          <View style={styles.ruleDashboard}>
+            <Image
+              style={{ width: 207, height: 214 }}
+              source={require("../assets/rule-dashboard.png")}
+            />
+          </View>
+          <View style={styles.textBoxParagraph}>
+            <ScrollView>
               <Text style={styles.textStartParagraph}>Game Rules:</Text>
               <Text style={styles.textParagraph}>
                 1. Players will get 5 playing tokens and are asked to choose one
@@ -96,8 +173,13 @@ export default function Dashboard({ navigation }) {
                 8. If the player loses, the player’s playing token will decrease
                 -1 point.
               </Text>
-            </View>
-          </ScrollView>
+              <Text style={styles.textParagraph}>
+                {
+                  "WIN OR LOSE?\n1.  Rock vs Scissors, Rock wins.\n2. Scissors vs Paper, Scissors wins.\n3. Paper vs Rock, Paper wins."
+                }
+              </Text>
+            </ScrollView>
+          </View>
           <View style={styles.playButton}>
             <TouchableOpacity onPress={handleStartGame}>
               <Text style={styles.playText}>Start Playing!</Text>
@@ -131,6 +213,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 20,
   },
+  ruleDashboard: {
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 15,
+    marginHorizontal: 10,
+    marginBottom: 20,
+  },
   textBoxParagraph: {
     backgroundColor: "white",
     justifyContent: "center",
@@ -138,6 +229,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginHorizontal: 10,
     marginBottom: 20,
+    height: 200,
   },
   textStartParagraph: {
     textAlign: "center",
@@ -148,9 +240,10 @@ const styles = StyleSheet.create({
     fontFamily: "LeagueSpartan",
     fontSize: 16,
   },
-  logoutButton: {
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
+  profileButton: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "stretch",
   },
   playButton: {
     backgroundColor: "#F8E51E",
@@ -160,7 +253,7 @@ const styles = StyleSheet.create({
   },
   playText: {
     textAlign: "center",
-    fontFamily: "Montserrat",
+    fontFamily: "MontserratMed",
     fontWeight: 500,
   },
 });

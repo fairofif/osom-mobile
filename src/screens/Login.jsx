@@ -195,7 +195,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 60,
-    fontWeight: "bold",
     color: "#fff",
     textAlign: "center",
     marginBottom: 30,
@@ -275,7 +274,6 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: "bold",
     color: "#000",
     textAlign: "center",
   },

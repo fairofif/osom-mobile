@@ -94,6 +94,7 @@ export default function Register({ navigation }) {
             <SafeAreaView style={styles.container}>
                 <View style={styles.card}>
                     <Text style={styles.title}>OSOM!</Text>
+                    <Text style={[styles.termsText, {marginBottom: 10}]}>Please register to login</Text>
                     <TextInputAuth
                         placeholder="Full Name"
                         value={username}
@@ -140,9 +141,9 @@ export default function Register({ navigation }) {
                                 />
                             </View>
                             <Text style={styles.termsText}>
-                                Accepted{" "}
+                                Accept {" "}
                                 <TouchableOpacity onPress={() => setModalVisible(true)}>
-                                    <Text style={styles.termsLink}>Term And Condition</Text>
+                                    <Text style={styles.termsLink}>Terms And Condition</Text>
                                 </TouchableOpacity>
                                 <Text style={{ color: "red" }}> *</Text>
                             </Text>
@@ -193,7 +194,7 @@ export default function Register({ navigation }) {
                     />
                     <TouchableOpacity onPress={handleLogin}>
                         <Text style={styles.link}>
-                            Alredy have account? <Text style={styles.linkTo}> Login</Text>
+                            Already have account? <Text style={styles.linkTo}>Login</Text>
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -272,11 +273,12 @@ const styles = StyleSheet.create({
     termsText: {
         color: "white",
         fontSize: 14,
+        fontFamily: "MontserratReg",
     },
     termsLink: {
         fontSize: 14,
-        lineHeight: 15,
-        fontFamily: "Arial",
+        lineHeight: 16,
+        fontFamily: "MontserratReg",
         flexDirection: "row",
         alignItems: "center",
         color: "#FFD700",
@@ -284,21 +286,18 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 60,
-        fontWeight: "bold",
         color: "#fff",
         textAlign: "center",
-        marginBottom: 30,
+        marginBottom: 20,
         fontFamily: "CherryBombOne",
     },
     textButton: {
         fontSize: 16,
         color: "white",
-        fontWeight: "bold",
         fontFamily: "MontserratReg",
     },
     headerTitle: {
         fontSize: 18,
-        fontWeight: "bold",
         color: "#000",
         textAlign: "center",
     },

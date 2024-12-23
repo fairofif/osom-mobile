@@ -34,7 +34,7 @@ export default function Start({ navigation }) {
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.card}>
-          <Text style={styles.title}>Welcome to </Text>
+          <Text style={styles.title}>Welcome to</Text>
           <Text style={styles.titleOsom}>OSOM!</Text>
           <Text style={styles.subtitle}>Rock, Paper, Scissor</Text>
           <View style={styles.buttonsContainer}>
@@ -87,14 +87,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontWeight: "bold",
     color: "#fff",
     textAlign: "center",
     fontFamily: "Montserrat",
+    marginBottom: -15,
   },
   titleOsom: {
     fontSize: 60,
-    fontWeight: "bold",
     color: "#fff",
     textAlign: "center",
     marginBottom: 10,
@@ -124,13 +123,11 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     color: "black",
-    fontWeight: "bold",
     fontFamily: "MontserratReg",
   },
   buttonTextRegister: {
     fontSize: 16,
     color: "#fff",
-    fontWeight: "bold",
     fontFamily: "MontserratReg",
   },
 });
