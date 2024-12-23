@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonsContainer: {
-    height: 90,
+    height: 105,
     width: '100%',
     justifyContent: 'space-between'
   },
