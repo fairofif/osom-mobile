@@ -13,9 +13,51 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { useFonts } from "expo-font";
 import Icon from "react-native-vector-icons/Ionicons";
+import { restGetUser, restLeaderboard } from "../api/profile";
+import { useEffect, useState } from "react";
+import CustomButton from "../components/CustomButton";
+import { CommonActions } from "@react-navigation/native";
 
 export default function Profile({ navigation }) {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+
+  const [userData, setUserData] = useState(null);
+  const [dirAva, setDirAva] = useState(null);
+  const [rank, setRank] = useState([]);
+
+  const findUserRank = (userRanks, id) => {
+    const user = userRanks.find((user) => user.id === id);
+    return user ? user.rank : null;
+  };
+
+  const getUserData = async () => {
+    try {
+      const res = await restGetUser(user.token);
+      const resRank = await restLeaderboard(user.token);
+      setUserData(res)
+      setRank(findUserRank(resRank.leaderboard, res.id))
+      if (res.avatar_id === 6) {
+        setDirAva(require("../assets/image/chara/chara_tyo.png"));
+      } else if (res.avatar_id === 3) {
+        setDirAva(require("../assets/image/chara/chara_opip.png"));
+      } else if (res.avatar_id === 1) {
+        setDirAva(require("../assets/image/chara/chara_aldra.png"));
+      } else if (res.avatar_id === 4) {
+        setDirAva(require("../assets/image/chara/chara_suki.png"));
+      } else if (res.avatar_id === 2) {
+        setDirAva(require("../assets/image/chara/chara_hanip.png"));
+      } else if (res.avatar_id === 5) {
+        setDirAva(require("../assets/image/chara/chara_dhea.png"));
+      }
+    } catch (e) {
+      console.log(e.message)
+    }
+  }
+
+  useEffect(() => {
+    getUserData();
+  }, [])
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -24,6 +66,15 @@ export default function Profile({ navigation }) {
       Alert.alert(e.message);
     }
   };
+
+  const handleHome = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Dashboard" }],
+      })
+    );
+  }
 
   const [fontsLoaded] = useFonts({
     CherryBombOne: require("../assets/font/CherryBombOne-Regular.ttf"),
@@ -45,6 +96,7 @@ export default function Profile({ navigation }) {
             style={{
               marginBottom: -6,
             }}
+            onPress={handleHome}
           >
             <Icon name="arrow-back-circle" size={36} />
           </TouchableOpacity>
@@ -67,8 +119,8 @@ export default function Profile({ navigation }) {
         </View>
         <View style={styles.content}>
           <View style={styles.profile}>
-            <Image source={require("../assets/image/chara/chara_aldra.png")} />
-            <Text style={styles.textStart}>User's Name</Text>
+            <Image source={dirAva} />
+            <Text style={styles.textStart}>{userData?.fullname}</Text>
           </View>
           <View
             style={{
@@ -80,21 +132,24 @@ export default function Profile({ navigation }) {
           >
             <View style={styles.stats}>
               <Text style={styles.statsHeader}>Rank</Text>
-              <Text style={styles.statsText}>1</Text>
+              <Text style={styles.statsText}>{rank}</Text>
             </View>
             <View style={styles.stats}>
-              <Text style={styles.statsHeader}>Scores</Text>
-              <Text style={styles.statsText}>150000</Text>
+              <Text style={styles.statsHeader}>Highest Score</Text>
+              <Text style={styles.statsText}>{userData?.highscore}</Text>
             </View>
             <View style={styles.stats}>
               <Text style={styles.statsHeader}>Total Matches</Text>
-              <Text style={styles.statsText}>100</Text>
+              <Text style={styles.statsText}>{userData?.total_matches}</Text>
             </View>
           </View>
           <View style={styles.logoutButton}>
-            <TouchableOpacity onPress={handleLogout}>
-              <Text style={styles.logoutText}>Logout</Text>
-            </TouchableOpacity>
+            <CustomButton
+              onPress={handleLogout}
+              title="Logout"
+              bgColor="#CA0000"
+              textColor="#FFFFFF"
+            />
           </View>
         </View>
       </SafeAreaView>
@@ -162,16 +217,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   logoutButton: {
-    backgroundColor: "#CA0000",
     padding: 12,
     borderRadius: 15,
     marginHorizontal: 10,
     width: "100%",
-  },
-  logoutText: {
-    textAlign: "center",
-    fontFamily: "Montserrat",
-    fontWeight: 500,
-    color: "white",
   },
 });

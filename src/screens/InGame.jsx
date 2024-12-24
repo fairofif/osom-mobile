@@ -178,7 +178,7 @@ export default function InGame({ navigation }) {
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,
-                routes: [{ name: "Dashboard" }],
+                routes: [{ name: "Leaderboard" }],
             })
         );
     }

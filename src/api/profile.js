@@ -31,4 +31,15 @@ export const restUpdateAva = async (token, userData) => {
     }
 }
 
-
+export const restLeaderboard = async (token) => {
+    try {
+        const response = await api.get('/users/leaderboard', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        return response.data.data
+    } catch (e) {
+        throw new Error('Failed to Get Leaderboard: ' + e.message)
+    }
+}

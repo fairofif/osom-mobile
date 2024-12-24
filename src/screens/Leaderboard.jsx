@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,9 +9,32 @@ import {
   ImageBackground,
 } from "react-native";
 import { useFonts } from "expo-font";
-import Icon from "react-native-vector-icons/Ionicons";
+import { restLeaderboard } from "../api/profile";
+import { useAuth } from "../context/AuthContext";
+import CardLeaderBoard from "../components/CardLeaderboard";
+import CustomButton from "../components/CustomButton";
+import { CommonActions } from "@react-navigation/native";
 
-export default function Leaderboard() {
+
+export default function Leaderboard({navigation}) {
+  const [datas, setDatas] = useState([]);
+  const [userData, setUserData] = useState(null);
+  const { user } = useAuth();
+
+  const getLeaderboardDatas = async () => {
+    try {
+      const res = await restLeaderboard(user.token)
+      setDatas(res.leaderboard)
+      setUserData(res.userData)
+    } catch (e) {
+      console.log(e.message)
+    }
+  }
+
+  useEffect(() => {
+    getLeaderboardDatas();
+  }, [])
+
   const [fontsLoaded] = useFonts({
     CherryBombOne: require("../assets/font/CherryBombOne-Regular.ttf"),
     MontserratReg: require("../assets/font/Montserrat-Regular.ttf"),
@@ -22,41 +45,15 @@ export default function Leaderboard() {
     return null;
   }
 
-  const leaderboardData = [
-    { id: "1", name: "User 1", score: 500 },
-    { id: "2", name: "User 2", score: 400 },
-    { id: "3", name: "User 3", score: 300 },
-    { id: "4", name: "User 4", score: 200 },
-    { id: "5", name: "User 5", score: 100 },
-  ];
-
-  const renderItem = ({ item, index }) => {
-    let trophyColor;
-
-    // Assign colors based on rank
-    if (index === 0) {
-      trophyColor = "#fcbe00"; // Gold
-    } else if (index === 1) {
-      trophyColor = "#8f8f8f"; // Silver
-    } else if (index === 2) {
-      trophyColor = "#db8735"; // Bronze
-    } else {
-      trophyColor = "#bdbdbd"; // Gray
+  const handleHome = () => {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Dashboard" }],
+        })
+      );
     }
 
-    return (
-      <View style={styles.card}>
-        <View style={styles.iconContainer}>
-          <Icon name="trophy-outline" size={40} color={trophyColor} />
-          <View style={styles.iconOverlay}>
-            <Text style={styles.iconText}>{index + 1}</Text>
-          </View>
-        </View>
-        <Text style={styles.rank}>{item.name}</Text>
-        <Text style={styles.score}>{item.score}</Text>
-      </View>
-    );
-  };
 
   return (
     <ImageBackground
@@ -67,14 +64,29 @@ export default function Leaderboard() {
         <View style={styles.content}>
           <Text style={styles.title}>Leaderboard!</Text>
           <FlatList
-            data={leaderboardData}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            style={styles.flatlistContainer}
+            data={datas}
+            renderItem= { ({item}) =>
+              <CardLeaderBoard
+                idPlayer={item.id}
+                name={item.fullname}
+                rank={item.rank}
+                score={item.highscore}
+                idUser={userData.id}
+              />
+            }
+            showsVerticalScrollIndicator={false}
+            keyExtractor={item => item.id}
             contentContainerStyle={styles.list}
           />
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Finish!</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+            <CustomButton
+              bgColor="#F8E51E"
+              textColor="#FFFFFF"
+              title="Home"
+              onPress={handleHome}
+            />
+          </View>
         </View>
       </SafeAreaView>
     </ImageBackground>
@@ -108,65 +120,15 @@ const styles = StyleSheet.create({
   },
   list: {
     width: "100%",
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  card: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 15,
-    marginVertical: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
+  flatlistContainer: {
+    height: '60%',
+    width: '95%',
   },
-  rank: {
-    fontFamily: "Boogaloo",
-    fontSize: 25,
-    marginLeft: 10,
-  },
-  score: {
-    fontFamily: "CherryBombOne",
-    fontSize: 25,
-    marginLeft: 120,
-    marginTop: -5,
-  },
-  button: {
-    marginTop: 20,
-    backgroundColor: "#F8E51E",
-    paddingVertical: 12,
-    paddingHorizontal: 120,
-    borderRadius: 20,
-    elevation: 3,
-  },
-  buttonText: {
-    fontFamily: "Montserrat",
-    fontWeight: 500,
-    textAlign: "center",
-  },
-  iconContainer: {
-    position: "relative",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  iconOverlay: {
-    position: "absolute",
-    top: 4,
-    right: 10,
-    backgroundColor: "white",
-    borderRadius: 10,
-    width: 20,
-    height: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "transparent",
-  },
-  iconText: {
-    fontFamily: "Boogaloo",
-    fontSize: 18,
-    color: "black",
-  },
+  buttonContainer: {
+    width: "90%",
+    marginTop: 30
+  }
 });
