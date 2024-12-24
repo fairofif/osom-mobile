@@ -54,6 +54,11 @@ export default function Leaderboard({navigation}) {
       );
     }
 
+  const handleProfile = (idPlayer) => {
+    console.log(idPlayer)
+    navigation.navigate('ProfilePublic', {idPlayer: idPlayer})
+  }
+
 
   return (
     <ImageBackground
@@ -73,6 +78,7 @@ export default function Leaderboard({navigation}) {
                 rank={item.rank}
                 score={item.highscore}
                 idUser={userData.id}
+                onPress={() => {handleProfile(item.id)}}
               />
             }
             showsVerticalScrollIndicator={false}

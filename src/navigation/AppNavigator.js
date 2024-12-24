@@ -11,6 +11,7 @@ import Character from "../screens/Character";
 import InGame from "../screens/InGame";
 import Profile from "../screens/Profile";
 import Leaderboard from "../screens/Leaderboard";
+import ProfilePublic from "../screens/ProfilePublic";
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,11 @@ export default function AppNavigator() {
           <Stack.Screen
             name="Profile"
             component={Profile}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ProfilePublic"
+            component={ProfilePublic}
             options={{ headerShown: false }}
           />
         </>
