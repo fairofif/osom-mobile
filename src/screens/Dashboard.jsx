@@ -17,16 +17,6 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 export default function Dashboard({ navigation }) {
   const waveAnim = useRef(new Animated.Value(0)).current;
-  // const { logout } = useAuth();
-
-  // const handleLogout = async () => {
-  //   try {
-  //     await logout();
-  //     Alert.alert("Logged Out");
-  //   } catch (e) {
-  //     Alert.alert(e.message);
-  //   }
-  // };
 
   const [fontsLoaded] = useFonts({
     CherryBombOne: require("../assets/font/CherryBombOne-Regular.ttf"),

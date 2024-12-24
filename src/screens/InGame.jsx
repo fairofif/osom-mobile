@@ -42,14 +42,6 @@ export default function InGame({ navigation }) {
 
     const popupOpacity = useRef(new Animated.Value(0)).current; // Popup animation opacity
 
-    const [fontsLoaded] = useFonts({
-        CherryBombOne: require("../assets/font/CherryBombOne-Regular.ttf"),
-        MontserratBold: require("../assets/font/Montserrat-Bold.ttf")
-    });
-    if (!fontsLoaded) {
-        return null;
-    }
-
     const getIdChara = async () => {
         try {
             const res = await restGetUser(user.token);
@@ -189,6 +181,14 @@ export default function InGame({ navigation }) {
                 routes: [{ name: "Dashboard" }],
             })
         );
+    }
+
+    const [fontsLoaded] = useFonts({
+        CherryBombOne: require("../assets/font/CherryBombOne-Regular.ttf"),
+        MontserratBold: require("../assets/font/Montserrat-Bold.ttf")
+    });
+    if (!fontsLoaded) {
+        return null;
     }
 
     return (

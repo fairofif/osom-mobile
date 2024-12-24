@@ -11,33 +11,8 @@ import Character from "../screens/Character";
 import InGame from "../screens/InGame";
 import Profile from "../screens/Profile";
 import Leaderboard from "../screens/Leaderboard";
-// import { Icon } from "react-native-vector-icons/Icon";
 
 const Stack = createNativeStackNavigator();
-
-// const Tab = createBottomTabNavigator();
-
-// const TabNavigator = () => {
-//     return (
-//         <Tab.Navigator
-//             screenOptions={{
-//                 tabBarStyle: { height: 60, paddingBottong: 10 }
-//             }}
-//         >
-//             <Tab.Screen
-//                 name="Dashboard"
-//                 component={Dashboard}
-//                 options={{
-//                     title: "Dashboard",
-//                     headerShown: false,
-//                     tabBarIcon: ({ color, size }) => (
-//                         <Icon name="home" color={color} size={size} />
-//                     ),
-//                 }}
-//             />
-//         </Tab.Navigator>
-//     )
-// }
 
 export default function AppNavigator() {
   const auth = useAuth();
@@ -46,11 +21,6 @@ export default function AppNavigator() {
     <Stack.Navigator>
       {auth.user ? (
         <>
-          {/* <Stack.Screen
-                        name="Main"
-                        component={TabNavigator}
-                        options={{ title: "Main", headerShown: false }}
-                    /> */}
           <Stack.Screen
             name="Dashboard"
             component={Dashboard}
