@@ -48,7 +48,7 @@ export default function Start({ navigation }) {
               title="Register"
               onPress={handleRegister}
               bgColor='#F8E51E'
-              textColor='white'
+              textColor='black'
             />
           </View>
 
@@ -79,11 +79,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 20,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 10,
   },
   title: {
     fontSize: 32,
@@ -91,6 +86,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Montserrat",
     marginBottom: -15,
+    textShadowColor: "#636363",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 5,
   },
   titleOsom: {
     fontSize: 60,
@@ -98,12 +96,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 10,
     fontFamily: "CherryBombOne",
+    textShadowOffset: { width: 4, height: 4 },
+    textShadowRadius: 10,
   },
   subtitle: {
     fontSize: 16,
     color: "#fff",
     marginBottom: 20,
     fontFamily: "MontserratMedium",
+    textShadowColor: "#636363",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 5,
   },
   buttonLogin: {
     width: "100%",

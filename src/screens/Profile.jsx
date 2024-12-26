@@ -1,12 +1,10 @@
 import {
-  Button,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
   ImageBackground,
-  ScrollView,
   Alert,
   Image,
 } from "react-native";
@@ -197,6 +195,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    backgroundColor: "rgba(254, 255, 214, 0.8)",
+    borderRadius: 10,
   },
   stats: {
     backgroundColor: "white",
