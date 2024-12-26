@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   ImageBackground,
   View,
-  TextInput,
   Text,
   Modal,
   ScrollView,
@@ -14,7 +13,6 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import { useFonts } from "expo-font";
-import { Checkbox } from "react-native-paper";
 
 import { restLogin } from "../api/auth";
 import TextInputAuth from "../components/TextInputAuth";
@@ -143,11 +141,11 @@ export default function Login({ navigation }) {
             title="Login"
             onPress={handleLogin}
             bgColor="#F8E51E"
-            textColor="white"
+            textColor="black"
           />
           <TouchableOpacity onPress={handleRegister}>
             <Text style={styles.link}>
-              Dont't have an account?{" "}
+              Don't have an account?{" "}
               <Text style={styles.linkTo}>Register</Text>
             </Text>
           </TouchableOpacity>
@@ -180,11 +178,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.4)",
     padding: 20,
     borderRadius: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 10,
   },
   errorText: {
     fontSize: 12,
@@ -199,6 +192,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 30,
     fontFamily: "CherryBombOne",
+    textShadowOffset: { width: 4, height: 4 },
+    textShadowRadius: 10,
   },
   termsContainer: {
     flexDirection: "row",
@@ -245,6 +240,9 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     fontFamily: "MontserratReg",
+    textShadowColor: "#636363",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 5,
   },
   linkTo: {
     marginTop: 10,
