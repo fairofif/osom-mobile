@@ -61,7 +61,7 @@ export default function Register({ navigation }) {
   };
 
   const handleRegister = async () => {
-    if (validate) {
+    if (validate()) {
       try {
         const userData = {
           fullname: username,
