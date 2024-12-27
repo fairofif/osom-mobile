@@ -33,7 +33,7 @@ export default function Profile({ navigation }) {
       const res = await restGetUser(user.token);
       const resRank = await restLeaderboard(user.token);
       setUserData(res)
-      setRank(findUserRank(resRank.leaderboard, res.id))
+      setRank(findUserRank(resRank.leaderboard, res.userId))
       if (res.avatar_id === 6) {
         setDirAva(require("../assets/image/chara/chara_tyo.png"));
       } else if (res.avatar_id === 3) {

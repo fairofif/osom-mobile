@@ -19,6 +19,7 @@ import MoveButton from "../components/MoveButton";
 import { CommonActions } from "@react-navigation/native";
 import InGamePopUp from "../components/InGamePopUp";
 import CustomButton from "../components/CustomButton";
+import { Audio } from 'expo-av';
 
 export default function InGame({ navigation }) {
     const { user } = useAuth();
@@ -34,6 +35,12 @@ export default function InGame({ navigation }) {
     const [winImageSource, setWinImageSource] = useState(null);
     const [loseImageSource, setLoseImageSource] = useState(null);
     const [addedScore, setAddedScore] = useState(0);
+
+    const [sound, setSound] = useState(null);
+    const [soundWin, setSoundWin] = useState(null);
+    const [soundLose, setSoundLose] = useState(null);
+    const [soundGOver, setSoundGOver] = useState(null);
+    const [soundLeaderboard, setSoundLeaderboard] = useState(null);
 
     const gameOverSource = require("../assets/image/ingame-popup/game-over.png")
 
@@ -66,12 +73,50 @@ export default function InGame({ navigation }) {
         }
     };
 
+    const playAudio = async (audioFile, setAudio) => {
+        try {
+            const { sound } = await Audio.Sound.createAsync(audioFile);
+            setAudio(sound);
+            return sound;
+        } catch (error) {
+            console.error('Error loading sound:', error);
+        }
+    };
+
+    useEffect(() => {
+        const loadSounds = async () => {
+            const { sound } = await Audio.Sound.createAsync(
+                require('../assets/sounds/ingame-bg.m4a')
+            );
+            setSound(sound);
+            await sound.setIsLoopingAsync(true);
+            await sound.playAsync();
+            setSoundWin(await playAudio(require('../assets/sounds/ingame-win.mp3'), setSoundWin));
+            setSoundLose(await playAudio(require('../assets/sounds/ingame-lose.m4a'), setSoundLose));
+            setSoundLeaderboard(await playAudio(require('../assets/sounds/ingame-leaderboard.m4a'), setSoundLeaderboard));
+            setSoundGOver(await playAudio(require('../assets/sounds/ingame-gover.m4a'), setSoundGOver));
+        };
+
+        loadSounds();
+
+        return () => {
+            if (soundWin) soundWin.unloadAsync();
+            if (soundLose) soundLose.unloadAsync();
+            if (soundLeaderboard) soundLeaderboard.unloadAsync();
+            if (soundGOver) soundGOver.unloadAsync();
+        };
+    }, []);
+
     useEffect(() => {
         if (message == null) {
             getIdChara();
             newGame();
         } else if (message === "Match is over") {
             handleEndGame();
+            if (sound) {
+                sound.unloadAsync();
+                soundGOver.replayAsync();
+            }
         }
     }, [message]);
 
@@ -99,6 +144,11 @@ export default function InGame({ navigation }) {
 
     useEffect(() => {
         if (win === "Win" || win === "Lose") {
+            if (win === "Win" && soundWin) {
+                soundWin.replayAsync();
+            } else if (win === "Lose" && soundLose) {
+                soundLose.replayAsync();
+            }
             Animated.sequence([
                 Animated.timing(popupOpacity, {
                     toValue: 1,
@@ -181,6 +231,7 @@ export default function InGame({ navigation }) {
                 routes: [{ name: "Leaderboard" }],
             })
         );
+        soundLeaderboard.replayAsync();
     }
 
     const [fontsLoaded] = useFonts({
