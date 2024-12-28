@@ -199,7 +199,7 @@ export default function Register({ navigation }) {
                   onPress={() => setModalVisible(false)}
                 >
                   <Button
-                    title="Tutup"
+                    title="Close"
                     color={"white"}
                     onPress={() => setModalVisible(false)}
                   />
@@ -251,6 +251,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
+    borderRadius: 30,
   },
   card: {
     width: "80%",
