@@ -115,7 +115,7 @@ export default function Dashboard({ navigation }) {
               <Text style={{ fontFamily: "LeagueSpartan" }}>Profile</Text>
             </View>
           </View>
-          <View style={{ paddingTop: 20, }}>
+          <View>
             <View style={{ flexDirection: "row" }}>
               <Text style={styles.textStart}>Hi, {userData?.fullname}!</Text>
               <Animated.Image
