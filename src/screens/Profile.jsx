@@ -14,6 +14,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { restGetUser, restLeaderboard } from "../api/profile";
 import { useEffect, useState } from "react";
 import CustomButton from "../components/CustomButton";
+import ProgressBar from "../components/ProgressBar";
 import { CommonActions } from "@react-navigation/native";
 
 export default function Profile({ navigation }) {
@@ -32,8 +33,8 @@ export default function Profile({ navigation }) {
     try {
       const res = await restGetUser(user.token);
       const resRank = await restLeaderboard(user.token);
-      setUserData(res)
-      setRank(findUserRank(resRank.leaderboard, res.userId))
+      setUserData(res);
+      setRank(findUserRank(resRank.leaderboard, res.userId));
       if (res.avatar_id === 6) {
         setDirAva(require("../assets/image/chara/chara_tyo.png"));
       } else if (res.avatar_id === 3) {
@@ -48,13 +49,25 @@ export default function Profile({ navigation }) {
         setDirAva(require("../assets/image/chara/chara_dhea.png"));
       }
     } catch (e) {
-      console.log(e.message)
+      console.log(e.message);
     }
-  }
+  };
+
+  const calculatePercentage = (type) => {
+    const {
+      batu: rock = 0,
+      gunting: scissors = 0,
+      kertas: paper = 0,
+    } = userData || {};
+    const total = rock + scissors + paper;
+    const count =
+      type === "rock" ? rock : type === "scissors" ? scissors : paper;
+    return total > 0 ? ((count / total) * 100).toFixed(2) : 0;
+  };
 
   useEffect(() => {
     getUserData();
-  }, [])
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -72,7 +85,7 @@ export default function Profile({ navigation }) {
         routes: [{ name: "Dashboard" }],
       })
     );
-  }
+  };
 
   const [fontsLoaded] = useFonts({
     CherryBombOne: require("../assets/font/CherryBombOne-Regular.ttf"),
@@ -85,7 +98,7 @@ export default function Profile({ navigation }) {
 
   return (
     <ImageBackground
-      source={require("../assets/image/Background.png")}
+      source={require("../assets/image/Background2.png")}
       style={styles.background}
     >
       <SafeAreaView style={styles.container}>
@@ -141,6 +154,20 @@ export default function Profile({ navigation }) {
               <Text style={styles.statsText}>{userData?.total_matches}</Text>
             </View>
           </View>
+          <View>
+            <ProgressBar
+              title="Rock"
+              percentage={calculatePercentage("rock")}
+            />
+            <ProgressBar
+              title="Paper"
+              percentage={calculatePercentage("paper")}
+            />
+            <ProgressBar
+              title="Scissors"
+              percentage={calculatePercentage("scissors")}
+            />
+          </View>
           <View style={styles.logoutButton}>
             <CustomButton
               onPress={handleLogout}
@@ -169,6 +196,7 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: "cover",
+    backgroundColor: "#FFF8A7",
   },
   profile: {
     justifyContent: "center",
@@ -195,7 +223,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "rgba(254, 255, 214, 0.8)",
     borderRadius: 10,
   },
   stats: {
@@ -206,11 +233,11 @@ const styles = StyleSheet.create({
   },
   statsHeader: {
     backgroundColor: "#FEAE4D",
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingVertical: 5,
     fontFamily: "CherryBombOne",
     fontSize: 16,
-    textAlign: "center"
+    textAlign: "center",
   },
   statsText: {
     fontFamily: "CherryBombOne",

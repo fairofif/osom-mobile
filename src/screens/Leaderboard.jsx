@@ -88,7 +88,7 @@ export default function Leaderboard({navigation}) {
           <View style={styles.buttonContainer}>
             <CustomButton
               bgColor="#F8E51E"
-              textColor="#FFFFFF"
+              textColor="black"
               title="Home"
               onPress={handleHome}
             />
@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: "cover",
+    backgroundColor: "#FFF8A7",
   },
   title: {
     fontFamily: "CherryBombOne",

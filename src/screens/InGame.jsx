@@ -357,6 +357,7 @@ const styles = StyleSheet.create({
     background: {
         flex: 1,
         resizeMode: "cover",
+        backgroundColor: "#FFF8A7",
     },
     textIndicator: {
         fontFamily: 'MontserratBold',

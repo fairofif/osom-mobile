@@ -226,7 +226,7 @@ export default function Character({ navigation }) {
                     <CustomButton
                         onPress={handleStart}
                         bgColor='#F8E51E'
-                        textColor='white'
+                        textColor='black'
                         title="Start"
                     />
                 </View>
@@ -240,6 +240,7 @@ const styles = StyleSheet.create({
     background: {
         flex: 1,
         resizeMode: "cover",
+        backgroundColor: "#FFF8A7",
     },
     container: {
         flex: 1,
