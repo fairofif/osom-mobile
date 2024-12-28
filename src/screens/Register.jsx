@@ -168,42 +168,50 @@ export default function Register({ navigation }) {
                 </View>
 
                 {/* Scrollable Content */}
-                <ScrollView contentContainerStyle={styles.modalBody}>
+                <ScrollView style={styles.modalBody}>
                   <Text style={styles.modalText}>
                     Terms and Conditions for Using the OSOM Application{"\n\n"}
-                    1. Introduction{"\n"}
-                    By accessing and using the Osom Application, you agree to be
+                    <Text style={{ fontWeight: "bold" }}>
+                      1. Introduction{"\n"}
+                    </Text>
+                    By accessing and using the OSOM Application, you agree to be
                     bound by these Terms and Conditions. If you do not agree
                     with these Terms and Conditions, please stop using the
                     Application immediately.{"\n\n"}
-                    2. Use License{"\n"}
+                    <Text style={{ fontWeight: "bold" }}>
+                      2. Use License{"\n"}
+                    </Text>
                     We grant you a limited, non-exclusive, non-transferable
                     license to use the Application.{"\n\n"}
-                    3. User Content{"\n"}
+                    <Text style={{ fontWeight: "bold" }}>
+                      3. User Content{"\n"}
+                    </Text>
                     You are fully responsible for everything you do through the
                     Application. You may not do anything that is unlawful,
-                    violates third party rights, or is offensive.{"\n\n"}
-                    4. In-App Purchases{"\n"}
+                    violates third-party rights, or is offensive.{"\n\n"}
+                    <Text style={{ fontWeight: "bold" }}>
+                      4. In-App Purchases{"\n"}
+                    </Text>
                     If the App offers in-app purchases, you agree to pay all
-                    fees associated with such.{"\n\n"}
-                    5. Privacy{"\n"}
+                    fees associated with such purchases.{"\n\n"}
+                    <Text style={{ fontWeight: "bold" }}>5. Privacy{"\n"}</Text>
                     We will manage your personal data in accordance with our
                     Privacy Policy.{"\n\n"}
-                    6. Disclaimer of Warranties{"\n"}
-                    The Application is provided "as is" .....
+                    <Text style={{ fontWeight: "bold" }}>
+                      6. Disclaimer of Warranties{"\n"}
+                    </Text>
+                    The Application is provided "as is" without warranties of
+                    any kind, either express or implied, including, but not
+                    limited to, implied warranties of merchantability or fitness
+                    for a particular purpose.{"\n"}
                   </Text>
                 </ScrollView>
-
-                <TouchableOpacity
-                  style={styles.buttonModal}
+                <CustomButton
+                  title="Close"
                   onPress={() => setModalVisible(false)}
-                >
-                  <Button
-                    title="Close"
-                    color={"white"}
-                    onPress={() => setModalVisible(false)}
-                  />
-                </TouchableOpacity>
+                  bgColor="#F8E51E"
+                  textColor="black"
+                />
               </View>
             </View>
           </Modal>
@@ -338,6 +346,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalBody: {
+    marginBottom: 20,
   },
   modalText: {
     fontSize: 16,
