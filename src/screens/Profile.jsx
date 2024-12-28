@@ -54,15 +54,21 @@ export default function Profile({ navigation }) {
   };
 
   const calculatePercentage = (type) => {
-    const {
-      batu: rock = 0,
-      gunting: scissors = 0,
-      kertas: paper = 0,
-    } = userData || {};
+    if (!userData) return 0; // If no data, return 0
+  
+    const rock = parseInt(userData?.batu || 0); // Use 0 if `batu` is undefined
+    const scissors = parseInt(userData?.gunting || 0); // Use 0 if `gunting` is undefined
+    const paper = parseInt(userData?.kertas || 0); // Use 0 if `kertas` is undefined
     const total = rock + scissors + paper;
-    const count =
-      type === "rock" ? rock : type === "scissors" ? scissors : paper;
-    return total > 0 ? ((count / total) * 100).toFixed(2) : 0;
+  
+    if (total === 0) return 0; // If no matches played, percentage is 0
+  
+    let count = 0;
+    if (type === "rock") count = rock;
+    else if (type === "scissors") count = scissors;
+    else if (type === "paper") count = paper;
+  
+    return ((count / total) * 100).toFixed(2); // Return the percentage
   };
 
   useEffect(() => {
