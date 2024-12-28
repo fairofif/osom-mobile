@@ -168,20 +168,42 @@ export default function Register({ navigation }) {
                 </View>
 
                 {/* Scrollable Content */}
-                <ScrollView style={styles.modalBody}>
+                <ScrollView contentContainerStyle={styles.modalBody}>
                   <Text style={styles.modalText}>
-                    Aturan main Ketika pemain baru bermain: 1.Gunting vs Batu =
-                    Batu 2. Gunting vs Kertas = Gunting 3.Batu vs Kertas =
-                    Kertas 4. Kertas vs Batu = Kertas
+                    Terms and Conditions for Using the OSOM Application{"\n\n"}
+                    1. Introduction{"\n"}
+                    By accessing and using the Osom Application, you agree to be
+                    bound by these Terms and Conditions. If you do not agree
+                    with these Terms and Conditions, please stop using the
+                    Application immediately.{"\n\n"}
+                    2. Use License{"\n"}
+                    We grant you a limited, non-exclusive, non-transferable
+                    license to use the Application.{"\n\n"}
+                    3. User Content{"\n"}
+                    You are fully responsible for everything you do through the
+                    Application. You may not do anything that is unlawful,
+                    violates third party rights, or is offensive.{"\n\n"}
+                    4. In-App Purchases{"\n"}
+                    If the App offers in-app purchases, you agree to pay all
+                    fees associated with such.{"\n\n"}
+                    5. Privacy{"\n"}
+                    We will manage your personal data in accordance with our
+                    Privacy Policy.{"\n\n"}
+                    6. Disclaimer of Warranties{"\n"}
+                    The Application is provided "as is" .....
                   </Text>
-
-                  <TouchableOpacity
-                    style={styles.buttonModal}
-                    onPress={() => setModalVisible(false)}
-                  >
-                    <Button title="Tutup" color={"white"} />
-                  </TouchableOpacity>
                 </ScrollView>
+
+                <TouchableOpacity
+                  style={styles.buttonModal}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Button
+                    title="Tutup"
+                    color={"white"}
+                    onPress={() => setModalVisible(false)}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           </Modal>
@@ -224,12 +246,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonModal: {
-    backgroundColor: "#188A8D",
+    marginTop: 10,
+    backgroundColor: "#FFD700",
+    padding: 10,
     borderRadius: 5,
-    paddingVertical: 5,
-    width: 280,
     alignItems: "center",
-    alignSelf: "center",
   },
   card: {
     width: "80%",
@@ -257,7 +278,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#FFD700",
     marginBottom: 10,
-    marginTop: 0,
     marginLeft: 10,
   },
   termsContainer: {
@@ -276,10 +296,6 @@ const styles = StyleSheet.create({
   },
   termsLink: {
     fontSize: 14,
-    lineHeight: 16,
-    fontFamily: "MontserratReg",
-    flexDirection: "row",
-    alignItems: "center",
     color: "#FFD700",
     textDecorationLine: "underline",
     textShadowColor: "#636363",
@@ -300,11 +316,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: "MontserratReg",
   },
-  headerTitle: {
-    fontSize: 18,
-    color: "#000",
-    textAlign: "center",
-  },
   link: {
     marginTop: 10,
     color: "white",
@@ -321,34 +332,28 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     fontFamily: "MontserratReg",
   },
-  modalBody: {
-    paddingHorizontal: 16,
-  },
-  modalText: {
-    fontSize: 14,
-    lineHeight: 22,
-    marginBottom: 12,
-    color: "#333",
-    textAlign: "justify",
-  },
   modalContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
+  modalText: {
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: "justify",
+    color: "#333",
+  },
   modalContent: {
-    width: "80%",
+    width: "90%",
+    maxHeight: "80%",
     padding: 20,
     backgroundColor: "#fff",
     borderRadius: 10,
   },
   modalHeader: {
-    flexDirection: "row",
+    marginBottom: 10,
     alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    padding: 16,
   },
   input: {
     width: "100%",
@@ -361,5 +366,10 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     fontSize: 16,
     color: "#333",
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
