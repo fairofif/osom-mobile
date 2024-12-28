@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 import Icon from "react-native-vector-icons/Ionicons";
+import ProgressBar from "../components/ProgressBar";
 import { restGetUserPublic, restLeaderboard } from "../api/profile";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
@@ -31,7 +32,6 @@ export default function ProfilePublic({ route, navigation }) {
         try {
             const res = await restGetUserPublic(user.token, route.params.idPlayer);
             const resRank = await restLeaderboard(user.token);
-            console.log(res, resRank)
             setUserData(res)
             setRank(findUserRank(resRank.leaderboard, res.userId))
             if (res.avatar_id === 6) {
@@ -59,6 +59,24 @@ export default function ProfilePublic({ route, navigation }) {
     const handleHome = () => {
         navigation.goBack();
     }
+
+    const calculatePercentage = (type) => {
+        if (!userData) return 0; // If no data, return 0
+
+        const rock = parseInt(userData?.batu || 0); // Use 0 if `batu` is undefined
+        const scissors = parseInt(userData?.gunting || 0); // Use 0 if `gunting` is undefined
+        const paper = parseInt(userData?.kertas || 0); // Use 0 if `kertas` is undefined
+        const total = rock + scissors + paper;
+
+        if (total === 0) return 0; // If no matches played, percentage is 0
+
+        let count = 0;
+        if (type === "rock") count = rock;
+        else if (type === "scissors") count = scissors;
+        else if (type === "paper") count = paper;
+
+        return ((count / total) * 100).toFixed(2); // Return the percentage
+    };
 
     const [fontsLoaded] = useFonts({
         CherryBombOne: require("../assets/font/CherryBombOne-Regular.ttf"),
@@ -126,6 +144,20 @@ export default function ProfilePublic({ route, navigation }) {
                             <Text style={styles.statsHeader}>Total Matches</Text>
                             <Text style={styles.statsText}>{userData?.total_matches}</Text>
                         </View>
+                    </View>
+                    <View>
+                        <ProgressBar
+                            title="Rock"
+                            percentage={calculatePercentage("rock")}
+                        />
+                        <ProgressBar
+                            title="Paper"
+                            percentage={calculatePercentage("paper")}
+                        />
+                        <ProgressBar
+                            title="Scissors"
+                            percentage={calculatePercentage("scissors")}
+                        />
                     </View>
                 </View>
             </SafeAreaView>
