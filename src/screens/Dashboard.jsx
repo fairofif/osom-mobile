@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,17 +12,33 @@ import {
   Animated,
 } from "react-native";
 import { useAuth } from "../context/AuthContext";
+import { restGetUser } from "../api/profile";
 import { useFonts } from "expo-font";
 import Icon from "react-native-vector-icons/Ionicons";
 
 export default function Dashboard({ navigation }) {
   const waveAnim = useRef(new Animated.Value(0)).current;
+  const { user } = useAuth();
+  const [userData, setUserData] = useState(null);
 
   const [fontsLoaded] = useFonts({
     CherryBombOne: require("../assets/font/CherryBombOne-Regular.ttf"),
     MontserratReg: require("../assets/font/Montserrat-Regular.ttf"),
     LeagueSpartan: require("../assets/font/LeagueSpartan-Medium.ttf"),
   });
+
+  const getUserData = async () => {
+      try {
+        const res = await restGetUser(user.token);
+        setUserData(res);
+      } catch (e) {
+        console.log(e.message);
+      }
+    };
+  
+    useEffect(() => {
+      getUserData();
+    }, []);
 
   useEffect(() => {
     const waveAnimation = Animated.loop(
@@ -99,9 +115,9 @@ export default function Dashboard({ navigation }) {
               <Text style={{ fontFamily: "LeagueSpartan" }}>Profile</Text>
             </View>
           </View>
-          <View>
+          <View style={{ paddingTop: 20, }}>
             <View style={{ flexDirection: "row" }}>
-              <Text style={styles.textStart}>Hi, User!</Text>
+              <Text style={styles.textStart}>Hi, {userData?.fullname}!</Text>
               <Animated.Image
                 style={{
                   marginLeft: 10,
@@ -190,6 +206,7 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: "cover",
+    backgroundColor: "#FFF8A7",
   },
   textStart: {
     fontFamily: "CherryBombOne",

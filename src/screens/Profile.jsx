@@ -14,6 +14,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { restGetUser, restLeaderboard } from "../api/profile";
 import { useEffect, useState } from "react";
 import CustomButton from "../components/CustomButton";
+import ProgressBar from "../components/ProgressBar";
 import { CommonActions } from "@react-navigation/native";
 
 export default function Profile({ navigation }) {
@@ -32,8 +33,8 @@ export default function Profile({ navigation }) {
     try {
       const res = await restGetUser(user.token);
       const resRank = await restLeaderboard(user.token);
-      setUserData(res)
-      setRank(findUserRank(resRank.leaderboard, res.userId))
+      setUserData(res);
+      setRank(findUserRank(resRank.leaderboard, res.userId));
       if (res.avatar_id === 6) {
         setDirAva(require("../assets/image/chara/chara_tyo.png"));
       } else if (res.avatar_id === 3) {
@@ -48,13 +49,31 @@ export default function Profile({ navigation }) {
         setDirAva(require("../assets/image/chara/chara_dhea.png"));
       }
     } catch (e) {
-      console.log(e.message)
+      console.log(e.message);
     }
-  }
+  };
+
+  const calculatePercentage = (type) => {
+    if (!userData) return 0; // If no data, return 0
+  
+    const rock = parseInt(userData?.batu || 0); // Use 0 if `batu` is undefined
+    const scissors = parseInt(userData?.gunting || 0); // Use 0 if `gunting` is undefined
+    const paper = parseInt(userData?.kertas || 0); // Use 0 if `kertas` is undefined
+    const total = rock + scissors + paper;
+  
+    if (total === 0) return 0; // If no matches played, percentage is 0
+  
+    let count = 0;
+    if (type === "rock") count = rock;
+    else if (type === "scissors") count = scissors;
+    else if (type === "paper") count = paper;
+  
+    return ((count / total) * 100).toFixed(2); // Return the percentage
+  };
 
   useEffect(() => {
     getUserData();
-  }, [])
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -72,7 +91,7 @@ export default function Profile({ navigation }) {
         routes: [{ name: "Dashboard" }],
       })
     );
-  }
+  };
 
   const [fontsLoaded] = useFonts({
     CherryBombOne: require("../assets/font/CherryBombOne-Regular.ttf"),
@@ -85,7 +104,7 @@ export default function Profile({ navigation }) {
 
   return (
     <ImageBackground
-      source={require("../assets/image/Background.png")}
+      source={require("../assets/image/Background2.png")}
       style={styles.background}
     >
       <SafeAreaView style={styles.container}>
@@ -141,6 +160,20 @@ export default function Profile({ navigation }) {
               <Text style={styles.statsText}>{userData?.total_matches}</Text>
             </View>
           </View>
+          <View>
+            <ProgressBar
+              title="Rock"
+              percentage={calculatePercentage("rock")}
+            />
+            <ProgressBar
+              title="Paper"
+              percentage={calculatePercentage("paper")}
+            />
+            <ProgressBar
+              title="Scissors"
+              percentage={calculatePercentage("scissors")}
+            />
+          </View>
           <View style={styles.logoutButton}>
             <CustomButton
               onPress={handleLogout}
@@ -169,6 +202,7 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: "cover",
+    backgroundColor: "#FFF8A7",
   },
   profile: {
     justifyContent: "center",
@@ -195,7 +229,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "rgba(254, 255, 214, 0.8)",
     borderRadius: 10,
   },
   stats: {
@@ -206,11 +239,11 @@ const styles = StyleSheet.create({
   },
   statsHeader: {
     backgroundColor: "#FEAE4D",
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingVertical: 5,
     fontFamily: "CherryBombOne",
     fontSize: 16,
-    textAlign: "center"
+    textAlign: "center",
   },
   statsText: {
     fontFamily: "CherryBombOne",
